@@ -6,7 +6,8 @@ export default function Instructions(){
         width:"400px",
         height:"400px"}}>
     <img  src={require("./snake-game-ai-gen.png")} alt="Snake logo" />
-    <h4 id="instruction__text">Press Space Bar to start the game </h4>
+    <h4 id="instruction__text">Press Space Bar to start the game <span>  Developed By:Swathi Amaravadi</span></h4>
+  
     </div>
     </>
 };

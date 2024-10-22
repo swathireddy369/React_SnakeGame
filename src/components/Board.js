@@ -1,17 +1,22 @@
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Instructions from "./Instructions"
 import "./style.css"
 import Snake from "./Snake";
 import Food from './Food';
-export default function Board({ handleKeyPress, hasGameStarted, stopGame }) {
-    console.log("---------------------", hasGameStarted);
-
+export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir }) {
     let [currentScore, setCurrScore] = useState(0);
     let [highScore, setHighScore] = useState(0);
-    const [snake, setSnake] = useState([{ x: 10, y: 10 }]);
+    let [snake, setSnake] = useState([{ x: 10, y: 10 }]);
+    let [gameSpeedDelay, setGameSpeedDelay] = useState(500);
+    let [flag,setFlag]=useState(false)
 
-    const move = (dir) => {
+    useEffect(() => {
+        const interval = setInterval(move, gameSpeedDelay);
+        return (() => clearInterval(interval));
+    })
+    const move = () => {
+        if (!hasGameStarted) return;
         const snakeHead = { ...snake[0] }
         if (dir === "Up") {
             snakeHead.x--;
@@ -23,28 +28,58 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame }) {
         } else {
             snakeHead.y--;
         }
-        if (snakeHead.x <= 0 || snakeHead.y <= 0 || snakeHead.x === 20 || snakeHead.y === 20) {
-            stopGame();
-            resetGame();
 
+
+        if (snakeHead.x <1  || snakeHead.y < 1 || snakeHead.x > 21 || snakeHead.y > 21) {
+            resetGame();
+            return;
         }
         for (let i = 1; i < snake.length; i++) {
             let current = snake[i]
-
-            if (snakeHead.x <= current.x && snakeHead.y === current.y) {
-                resetGame()
+            if (snakeHead.x === current.x && snakeHead.y === current.y) {
+              resetGame()
+                return;
             }
         }
+        let newSnake = [...snake]
+      
+        newSnake.unshift(snakeHead);
+        if (snakeHead.x === food.x && snakeHead.y === food.y) {
+            setFood(generatefood())
+            increaseSpeed()
+        } else {
+            newSnake.pop()
+        }
+        setCurrScore(newSnake.length - 1)
+        setSnake(newSnake);
+    }
+    const increaseSpeed = () => {
+        // if(gameSpeedDelay > 150){
+        // gameSpeedDelay -=20;
+        // }else if(gameSpeedDelay > 100){
+        //     gameSpeedDelay -= 10;
+            
+        // } else{
+        //     gameSpeedDelay -= 5;
+        // }
+        // setGameSpeedDelay(gameSpeedDelay)
+
     }
     const resetGame = () => {
-
+        setFlag(true)
+        setSnake([{ x: 10, y: 10 }])
+        setFood(generatefood())
+        setHighScore(Math.max(highScore, currentScore))
+        setCurrScore(0)
+        setGameSpeedDelay(250)
+        stopGame();
     }
     //food move
     //non food move
     //update score
-    const updateScore = () => {
+    // const updateScore = () => {
 
-    }
+    // }
     const generatefood = () => {
         let x = Math.floor(Math.random() * 20 + 1);
         let y = Math.floor(Math.random() * 20 + 1);
@@ -57,10 +92,11 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame }) {
             <div id={"currentScore"}>
                 {currentScore.toString().padStart(3, '0')}
             </div>
-            <div id="highScore">
+            {flag && !hasGameStarted &&(
+                <div id="highScore">
 
-                {highScore.toString().padStart(3, '0')}
-            </div>
+                    {highScore.toString().padStart(3, '0')}
+                </div>)}
         </div>
         <div className="border1">
             <div className="border2">
@@ -69,7 +105,7 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame }) {
                         {hasGameStarted ? (<>
                             {snake.map((pixel, index) => (
 
-                                <Snake pixel={pixel} />
+                                <Snake key={index} pixel={pixel} />
 
                             ))}
 

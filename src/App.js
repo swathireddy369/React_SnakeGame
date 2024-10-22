@@ -5,28 +5,46 @@ import Board from './components/Board';
 
 function App() {
   let [hasGameStarted, setHasGameStarted] = useState(false);
-  let [dir, setDir] = useState("right");
+  let [dir, setDir] = useState("Right");
   const handleKeyPress = (e) => {
-    console.log("-----", e);
     e.preventDefault();
 
     if (e.code === " " || e.code === "Space") {
-      console.log("fdgfgfhgfh");
-
       setHasGameStarted(true)
     } else {
+      
+      if(dir === "Right" && e.key === "ArrowLeft"){
+        e.preventDefault()
+        
+      }
       switch (e.key) {
         case "ArrowUp":
-          dir = "UP"
+          if (dir !== 'Down') {
+            setDir("Up")
+          }
+          
+        
           break;
         case "ArrowDown":
-          dir = "Down"
+          if (dir !== 'Up') {
+            setDir("Down");
+          }
+         
+          
           break;
-        case "Arrowright":
-          dir = "right"
+        case "ArrowRight":
+          if (dir !== 'Left') {
+            setDir("Right");
+          }
+          
+         
           break;
         case "ArrowLeft":
-          dir = "Left"
+          if (dir !== 'Right') {
+            setDir("Left");
+          }
+          
+        
           break;
         default:
           break;
@@ -36,13 +54,14 @@ function App() {
 
   };
   const stopGame = () => {
+    
     setHasGameStarted(false);
   }
   return (
     <div className="App" onKeyDown={handleKeyPress} tabIndex="0">
       <>
         <Board hasGameStarted={hasGameStarted} dir={dir} stopGame={stopGame} />
-        <footer className="footer_text">Developed By:Swathi Amaravadi</footer>
+       
       </>
     </div>
   );
