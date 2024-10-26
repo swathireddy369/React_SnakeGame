@@ -8,7 +8,7 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir })
     let [currentScore, setCurrScore] = useState(0);
     let [highScore, setHighScore] = useState(0);
     let [snake, setSnake] = useState([{ x: 10, y: 10 }]);
-    let [gameSpeedDelay, setGameSpeedDelay] = useState(500);
+    let [gameSpeedDelay, setGameSpeedDelay] = useState(280);
     let [flag,setFlag]=useState(false)
 
     useEffect(() => {
@@ -54,7 +54,18 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir })
         setSnake(newSnake);
     }
     const increaseSpeed = () => {
-        // if(gameSpeedDelay > 150){
+    console.log(gameSpeedDelay);
+  if (gameSpeedDelay > 150) {
+    gameSpeedDelay -= 9;
+  } else if (gameSpeedDelay > 100) {
+    gameSpeedDelay -= 5;
+  } else if (gameSpeedDelay > 50) {
+    gameSpeedDelay -= 3;
+  } else if (gameSpeedDelay > 25) {
+    gameSpeedDelay -= 2;
+  }
+  setGameSpeedDelay(gameSpeedDelay)
+      // if(gameSpeedDelay > 150){
         // gameSpeedDelay -=20;
         // }else if(gameSpeedDelay > 100){
         //     gameSpeedDelay -= 10;
