@@ -53,7 +53,7 @@ font-weight: bolder;
 }
 #highScore{
     color:#d8ddca;
-    display: none;
+    /* display: none; */
 }
 #currentScore{
     color:#abb78a;

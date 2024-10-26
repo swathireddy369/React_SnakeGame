@@ -54,7 +54,6 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir })
         setSnake(newSnake);
     }
     const increaseSpeed = () => {
-    console.log(gameSpeedDelay);
   if (gameSpeedDelay > 150) {
     gameSpeedDelay -= 9;
   } else if (gameSpeedDelay > 100) {
@@ -105,7 +104,6 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir })
             </div>
             {flag && !hasGameStarted &&(
                 <div id="highScore">
-
                     {highScore.toString().padStart(3, '0')}
                 </div>)}
         </div>
