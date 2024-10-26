@@ -99,9 +99,10 @@ export default function Board({ handleKeyPress, hasGameStarted, stopGame, dir })
     let [food, setFood] = useState(generatefood);
     return <div  >
         <div className="scores">
+        {(flag || hasGameStarted) &&(
             <div id={"currentScore"}>
                 {currentScore.toString().padStart(3, '0')}
-            </div>
+            </div>)}
             {flag && !hasGameStarted &&(
                 <div id="highScore">
                     {highScore.toString().padStart(3, '0')}
